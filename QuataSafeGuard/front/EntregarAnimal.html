@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega de Animais</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Barra Fixa -->
+    <header class="navbar">
+        <a href="index.html" class="navbar-logo">QuataSafeGuard</a>
+        <nav>
+            <a href="adocao.html">Adoção</a>
+            <a href="entrega.html" class="active">Entrega</a>
+        </nav>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container-entrega">
+        <h1>Entrega de Animais</h1>
+        <section>
+            <form id="form-entrega" class="form-entrega">
+                <h2>Registrar Entrega</h2>
+                <div>
+                    <label for="animal-id">ID do Animal:</label>
+                    <input type="number" id="animal-id" name="animalId" placeholder="Digite o ID do animal" required>
+                </div>
+                <div>
+                    <label for="funcionario-id">ID do Funcionário:</label>
+                    <input type="number" id="funcionario-id" name="funcionarioId" placeholder="Digite o ID do funcionário" required>
+                </div>
+                <div>
+                    <label for="agenda-id">ID da Agenda:</label>
+                    <input type="number" id="agenda-id" name="agendaId" placeholder="Digite o ID da agenda" required>
+                </div>
+                <button type="submit" class="btn-entrega">Registrar Entrega</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Entregas Pendentes</h2>
+            <table id="tabela-entregas" class="table-entrega">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID do Animal</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Entregas pendentes serão carregadas aqui -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+
+    <script src="js/EntregarAnimal.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Entrega de Animais</title>
+    <link rel="stylesheet" href="css/style.css"> <!-- Reutilizando o mesmo CSS -->
+</head>
+<body>
+    <!-- Barra Fixa -->
+    <header class="navbar">
+        <a href="index.html" class="navbar-logo">QuataSafeGuard</a>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        <h1>Agendar Entrega de Animais</h1>
+        <form id="form-agendamento" enctype="multipart/form-data">
+            <!-- CPF do Doador -->
+            <div class="form-group">
+                <label for="cpf-doador">CPF do Doador:</label>
+                <input type="text" id="cpf-doador" name="cpfDoador" placeholder="Digite seu CPF" required>
+            </div>
+
+            <!-- Tipo de Animal -->
+            <div class="form-group">
+                <label for="tipo-animal">Tipo de Animal:</label>
+                <select id="tipo-animal" name="tipoAnimal" required>
+                    <option value="" disabled selected>Selecione o tipo de animal</option>
+                    <option value="Cachorro">Cachorro</option>
+                    <option value="Gato">Gato</option>
+                </select>
+            </div>
+
+            <!-- Data e Hora -->
+            <div class="form-group">
+                <label for="data-hora">Data e Hora da Entrega:</label>
+                <input type="datetime-local" id="data-hora" name="dataHora" required>
+            </div>
+
+            <!-- Informações Adicionais -->
+            <div class="form-group">
+                <label for="informacoes">Informações Adicionais:</label>
+                <textarea id="informacoes" name="informacoes" rows="4" placeholder="Exemplo: Nome do animal, idade, características, etc."></textarea>
+            </div>
+
+            <!-- Upload da Carteira de Vacinação -->
+            <div class="form-group">
+                <label for="carteira-vacina">Upload da Carteira de Vacinação:</label>
+                <input type="file" id="carteira-vacina" name="carteiraVacina" accept="image/*" required>
+            </div>
+
+            <!-- Botão de Enviar -->
+            <button type="submit" class="btn-submit">Agendar Entrega</button>
+        </form>
+    </main>
+
+    <script src="js/AgendarAnimal.js"></script>
+</body>
+</html>

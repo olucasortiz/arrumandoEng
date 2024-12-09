@@ -1,0 +1,234 @@
+:root {
+    --primary-color: #004aad; /* Azul escuro */
+    --secondary-color: #ff9900; /* Laranja */
+    --background-color: #f7f9fc; /* Fundo claro */
+    --text-color: #333; /* Texto cinza escuro */
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Navbar fixa no topo */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.navbar-logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar-logo:hover {
+    text-decoration: underline;
+}
+
+.container {
+    margin-top: 70px; /* Para compensar a navbar fixa */
+    padding: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, select, textarea, button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Estilo para o menu dropdown */
+.menu-container {
+    position: relative;
+}
+
+.menu-button {
+    background-color: white;
+    color: var(--primary-color);
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%; /* Garante que o menu dropdown fique logo abaixo do botão */
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 5px; /* Pequeno espaçamento abaixo do botão */
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.menu-dropdown a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.menu-dropdown a:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Exibe o dropdown ao passar o mouse sobre o botão ou o menu */
+.menu-container:hover .menu-dropdown {
+    display: block;
+}
+
+/* Estilo adicional para botões de login e cadastro */
+.auth-container button {
+    background-color: white;
+    color: var(--primary-color);
+    border: none;
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.auth-container button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Encapsular estilos relacionados à página de entrega */
+.container-entrega {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.container-entrega h1, .container-entrega h2 {
+    color: #004080;
+}
+
+.form-entrega {
+    margin-bottom: 20px;
+}
+
+.form-entrega div {
+    margin-bottom: 10px;
+}
+
+.form-entrega label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-entrega input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-entrega {
+    background-color: #004080;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-entrega:hover {
+    background-color: #003366;
+}
+
+.table-entrega {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-entrega th, .table-entrega td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.status-pendente {
+    color: orange;
+    font-weight: bold;
+}
+
+.status-concluido {
+    color: green;
+    font-weight: bold;
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Visita</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Agendar Visita para Receber Recursos</h2>
+        <form id="visitaForm">
+            <div class="form-group">
+                <label for="nomeDoador">Nome do Doador</label>
+                <input type="text" class="form-control" id="nomeDoador" required>
+            </div>
+            <div class="form-group">
+                <label for="cpfDoador">CPF do Doador</label>
+                <input type="text" class="form-control" id="cpfDoador" required>
+            </div>
+            <div class="form-group">
+                <label for="dataVisita">Data da Visita</label>
+                <input type="date" class="form-control" id="dataVisita" required>
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço</label>
+                <input type="text" class="form-control" id="endereco" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Agendar Visita</button>
+        </form>
+
+        <h3 class="mt-5">Histórico de Visitas</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Doador</th>
+                    <th>CPF</th>
+                    <th>Endereço</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="historicoTabela">
+                <!-- As visitas serão carregadas aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            carregarHistoricoVisitas();
+        });
+
+        // Função para carregar o histórico de visitas
+        function carregarHistoricoVisitas() {
+            fetch("http://localhost:8080/api/visitas")
+                .then(response => response.json())
+                .then(data => {
+                    const historicoTabela = document.getElementById("historicoTabela");
+                    historicoTabela.innerHTML = '';
+                    data.forEach(visita => {
+                        const row = historicoTabela.insertRow();
+                        row.insertCell(0).textContent = new Date(visita.dataVisita).toLocaleDateString();
+                        row.insertCell(1).textContent = visita.nomeDoador;
+                        row.insertCell(2).textContent = visita.cpfDoador;
+                        row.insertCell(3).textContent = visita.endereco;
+                        row.insertCell(4).textContent = visita.status;
+                        const actionsCell = row.insertCell(5);
+                        const editarBtn = document.createElement("button");
+                        editarBtn.classList.add("btn", "btn-warning", "btn-sm");
+                        editarBtn.textContent = "Editar";
+                        editarBtn.onclick = () => editarVisita(visita.id);
+                        const removerBtn = document.createElement("button");
+                        removerBtn.classList.add("btn", "btn-danger", "btn-sm");
+                        removerBtn.textContent = "Remover";
+                        removerBtn.onclick = () => removerVisita(visita.id);
+                        actionsCell.appendChild(editarBtn);
+                        actionsCell.appendChild(removerBtn);
+                    });
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar histórico de visitas:", error);
+                });
+        }
+
+        // Função para agendar visita
+        document.getElementById("visitaForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const nomeDoador = document.getElementById("nomeDoador").value;
+            const cpfDoador = document.getElementById("cpfDoador").value;
+            const dataVisita = document.getElementById("dataVisita").value;
+            const endereco = document.getElementById("endereco").value;
+
+            const visita = {
+                nomeDoador,
+                cpfDoador,
+                dataVisita,
+                endereco,
+                status: "Agendada"
+            };
+
+            fetch("http://localhost:8080/api/visitas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(visita)
+            })
+            .then(response => response.json())
+            .then(() => {
+                carregarHistoricoVisitas(); // Recarregar a lista de visitas
+                alert("Visita agendada com sucesso!");
+                document.getElementById("visitaForm").reset(); // Limpar o formulário
+            })
+            .catch(error => {
+                console.error("Erro ao agendar visita:", error);
+            });
+        });
+
+        // Função para editar visita
+        function editarVisita(id) {
+            // Você pode abrir um formulário similar para editar os dados
+            alert(`Editar visita ID: ${id}`);
+        }
+
+        // Função para remover visita
+        function removerVisita(id) {
+            if (confirm("Tem certeza que deseja remover esta visita?")) {
+                fetch(`http://localhost:8080/api/visitas/${id}`, {
+                    method: "DELETE"
+                })
+                .then(() => {
+                    carregarHistoricoVisitas(); // Recarregar a lista após remoção
+                    alert("Visita removida com sucesso!");
+                })
+                .catch(error => {
+                    console.error("Erro ao remover visita:", error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuataSafeGuard - Home</title>
+    <link rel="stylesheet" href="css/style.css"> <!-- Reutilizando o mesmo CSS -->
+    <style>
+        /* Estilo para a barra de navegação fixa */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary-color); /* Cor primária do tema */
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Nome da ONG no centro */
+        .navbar-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+        }
+
+        /* Estilo do menu no canto esquerdo */
+        .menu-container {
+            position: relative; /* Garante que o menu dropdown seja posicionado em relação ao container */
+        }
+
+        .menu-button {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            font-size: 1.5rem;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .menu-button:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%; /* Ajustado para ficar diretamente abaixo do botão */
+            left: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .menu-container.active .menu-dropdown {
+            display: block;
+        }
+
+        .menu-button:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Corrigido para manter o menu aberto enquanto o mouse está sobre o menu ou o botão */
+        .menu-container:hover .menu-dropdown {
+            display: block;
+        }
+
+        .menu-dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .menu-dropdown a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Estilo do login e cadastro no canto direito */
+        .auth-container {
+            flex: 0;
+        }
+
+        .auth-container button {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .auth-container button:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Fundo com tema */
+        body {
+            background-color: #f7f9fc; /* Fundo claro */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; /* Compensar a barra fixa */
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de Navegação -->
+    <div class="navbar">
+        <!-- Menu no canto esquerdo -->
+        <div class="menu-container">
+            <button class="menu-button">☰</button>
+            <div class="menu-dropdown">
+                <a href="AgendarAnimal.html">Agendar Animal</a>
+                <a href="EntregarAnimal.html">Entregar Animal</a>
+                <a href="saidaEstoque.html">Saida de Estoque</a>
+                <a href="ReceberDoacaoRecurso.html">Receber Doacao de Recursos</a>
+
+            </div>
+        </div>
+
+        <!-- Nome da ONG no centro -->
+        <div class="navbar-logo">QuataSafeGuard</div>
+
+        <!-- Login e Cadastro no canto direito -->
+        <div class="auth-container">
+            <button onclick="window.location.href='login.html'">Login</button>
+            <button onclick="window.location.href='cadastro.html'">Cadastro</button>
+        </div>
+    </div>
+    <script src="js/menu.js"></script>
+</body>
+</html>
