@@ -6,6 +6,7 @@ import com.quata.quatasafeguardbackend.repositories.RegistroSaidaItensRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -19,7 +20,7 @@ public class RegistroSaidaItensService {
     private ProdutoService produtoService;
 
     // Registrar saída de estoque
-    public RegistroSaidaItens registrarSaida(Long idProduto, Integer quantidade, String motivo) {
+    public RegistroSaidaItens registrarSaida(Long idProduto, Integer quantidade, String motivo, LocalDate dataSaida) {
         Produto produto = produtoService.getByIdProduto(idProduto);
         if (produto.getQuantidadeEstoque() < quantidade) {
             throw new IllegalArgumentException("Estoque insuficiente para a saída.");
@@ -27,6 +28,7 @@ public class RegistroSaidaItensService {
         produtoService.reduzirEstoque(idProduto, quantidade);
 
         RegistroSaidaItens registro = new RegistroSaidaItens();
+        registro.setDataSaida(dataSaida);
         registro.setProduto(produto);
         registro.setQtde(quantidade);
         registro.setMotivo(motivo);
@@ -53,7 +55,7 @@ public class RegistroSaidaItensService {
         if (novaQuantidadeEstoque < 0) {
             throw new IllegalArgumentException("Não é possível restaurar a quantidade de estoque para um valor negativo.");
         }
-        produtoService.adicionarEstoque(produto.getIdProduto(), registro.getQtde());
+        produtoService.reduzirEstoque(produto.getIdProduto(), registro.getQtde());
         registroSaidaItensRepository.delete(registro);
     }
 

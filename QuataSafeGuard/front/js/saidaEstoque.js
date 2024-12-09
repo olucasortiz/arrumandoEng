@@ -81,7 +81,6 @@ function carregarHistoricoSaidas() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             const tabela = document.getElementById("historicoTabela").getElementsByTagName('tbody')[0];
 
             // Limpa a tabela antes de inserir novos dados
@@ -93,15 +92,30 @@ function carregarHistoricoSaidas() {
 
                 row.insertCell(0).textContent = saida.produto.idProduto;
                 row.insertCell(1).textContent = saida.produto.nomeProduto;
-                row.insertCell(2).textContent = saida.qtde;
-                row.insertCell(3).textContent = saida.motivo || "Sem motivo";
-                row.insertCell(4).textContent = new Date(saida.dataSaida).toLocaleDateString({ language: 'pt-br' });
+
+                // Campo editável para quantidade
+                const quantidadeCell = row.insertCell(2);
+                const quantidadeInput = document.createElement("input");
+                quantidadeInput.type = "number";
+                quantidadeInput.value = saida.qtde;
+                quantidadeInput.classList.add("form-control", "form-control-sm");
+                quantidadeCell.appendChild(quantidadeInput);
+
+                // Campo editável para motivo
+                const motivoCell = row.insertCell(3);
+                const motivoInput = document.createElement("input");
+                motivoInput.type = "text";
+                motivoInput.value = saida.motivo || "Sem motivo";
+                motivoInput.classList.add("form-control", "form-control-sm");
+                motivoCell.appendChild(motivoInput);
+
+                row.insertCell(4).textContent = new Date(saida.dataSaida).toLocaleDateString('pt-BR');
 
                 const actionsCell = row.insertCell(5); // Coluna de ações
-                const alterarBtn = document.createElement("button");
-                alterarBtn.classList.add("btn", "btn-warning", "btn-sm", "me-2");
-                alterarBtn.textContent = "Alterar";
-                alterarBtn.onclick = () => alterarSaida(saida.idRegistroSaidaItens);
+                const salvarBtn = document.createElement("button");
+                salvarBtn.classList.add("btn", "btn-success", "btn-sm", "me-2");
+                salvarBtn.textContent = "Salvar";
+                salvarBtn.onclick = () => salvarAlteracoes(saida.idRegistroSaidaItens, quantidadeInput.value, motivoInput.value);
 
                 const removerBtn = document.createElement("button");
                 removerBtn.classList.add("btn", "btn-danger", "btn-sm");
@@ -109,7 +123,7 @@ function carregarHistoricoSaidas() {
                 removerBtn.onclick = () => removerSaida(saida.idRegistroSaidaItens);
 
                 // Adiciona os botões à célula
-                actionsCell.appendChild(alterarBtn);
+                actionsCell.appendChild(salvarBtn);
                 actionsCell.appendChild(removerBtn);
             });
         })
@@ -161,3 +175,28 @@ function removerSaida(id) {
             console.error(error);
         });
 }
+const salvarAlteracoes = async () => {
+    const id = 10; // Substitua pelo ID correto
+    const novaQuantidade = 5; // Nova quantidade
+    const novoMotivo = "Atualização manual"; // Opcional
+
+    try {
+        const response = await fetch(`http://localhost:8080/api/saida-estoque/${id}?novaQuantidade=${novaQuantidade}&novoMotivo=${encodeURIComponent(novoMotivo)}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao atualizar saída de estoque");
+        }
+
+        const data = await response.json();
+        console.log("Atualização bem-sucedida:", data);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+

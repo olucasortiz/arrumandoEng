@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -19,9 +20,10 @@ public class RegistroSaidaItensController {
     public ResponseEntity<RegistroSaidaItens> registrarSaida(
             @RequestParam Long idProduto,
             @RequestParam Integer quantidade,
-            @RequestParam(required = false) String motivo) {
+            @RequestParam(required = false) String motivo,
+            @RequestParam LocalDate dataSaida) {
         try {
-            RegistroSaidaItens registro = registroSaidaItensService.registrarSaida(idProduto, quantidade, motivo);
+            RegistroSaidaItens registro = registroSaidaItensService.registrarSaida(idProduto, quantidade, motivo,dataSaida);
             return ResponseEntity.ok(registro);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);

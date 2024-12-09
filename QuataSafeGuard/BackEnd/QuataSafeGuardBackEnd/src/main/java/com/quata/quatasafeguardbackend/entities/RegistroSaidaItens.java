@@ -31,9 +31,4 @@ public class RegistroSaidaItens {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "produtos_idProduto")
     private Produto produto;
-
-    @PrePersist
-    protected void onCreate() {
-        this.dataSaida = LocalDate.now();
-    }
 }

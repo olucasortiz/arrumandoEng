@@ -199,7 +199,7 @@ document.getElementById("doacaoForm").addEventListener("submit", function (event
     const cpf = document.getElementById("cpf").value.trim();  // Captura o CPF do doador
     const produtoId = document.getElementById("produto").value;
     const quantidade = document.getElementById("quantidade").value;
-
+    const dataSaida = document.getElementById('dataSaida').value;
     // Validação simples
     if (!cpf || !produtoId || !quantidade || quantidade <= 0) {
         alert("Por favor, preencha todos os campos corretamente.");
@@ -210,7 +210,7 @@ document.getElementById("doacaoForm").addEventListener("submit", function (event
     buscarDoadorPorCpf(cpf)
         .then(() => {
             // Montar URL com os parâmetros da requisição
-            const url = `http://localhost:8080/api/doacoes?cpf=${cpf}&produtoId=${produtoId}&quantidade=${quantidade}`;
+            const url = `http://localhost:8080/api/doacoes?cpf=${cpf}&produtoId=${produtoId}&quantidade=${quantidade}&dataSaida=${dataSaida}`;
 
             // Fazer a requisição
             fetch(url, {
