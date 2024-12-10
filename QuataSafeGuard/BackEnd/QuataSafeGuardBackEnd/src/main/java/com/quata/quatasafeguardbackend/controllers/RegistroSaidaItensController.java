@@ -1,5 +1,5 @@
 package com.quata.quatasafeguardbackend.controllers;
-
+import com.quata.quatasafeguardbackend.dto.registroSaida.RegistroSaidaRequest;
 import com.quata.quatasafeguardbackend.entities.RegistroSaidaItens;
 import com.quata.quatasafeguardbackend.services.RegistroSaidaItensService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +17,30 @@ public class RegistroSaidaItensController {
 
     @Autowired
     private RegistroSaidaItensService registroSaidaItensService;
+
     @PostMapping
-    public ResponseEntity<RegistroSaidaItens> registrarSaida(
-            @RequestParam Long idProduto,
-            @RequestParam Integer quantidade,
-            @RequestParam(required = false) String motivo,
-            @RequestParam LocalDate dataSaida) {
+    public ResponseEntity<List<RegistroSaidaItens>> registrarSaidas(@RequestBody List<RegistroSaidaRequest> saidasRequest) {
+        System.out.println("Iniciando processamento de múltiplas saídas:");
+        saidasRequest.forEach(saida -> {
+            System.out.println("Produto ID: " + saida.getIdProduto());
+            System.out.println("Quantidade: " + saida.getQuantidade());
+            System.out.println("Motivo: " + saida.getMotivo());
+            System.out.println("Data de Saída: " + saida.getDataSaida());
+        });
+
         try {
-            RegistroSaidaItens registro = registroSaidaItensService.registrarSaida(idProduto, quantidade, motivo,dataSaida);
-            return ResponseEntity.ok(registro);
+            List<RegistroSaidaItens> registros = registroSaidaItensService.registrarSaidas(saidasRequest);
+            return ResponseEntity.ok(registros);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            System.out.println("Erro: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
         } catch (NoSuchElementException e) {
+            System.out.println("Erro: Produto não encontrado.");
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<RegistroSaidaItens> buscarSaidaPorId(@PathVariable Long id) {

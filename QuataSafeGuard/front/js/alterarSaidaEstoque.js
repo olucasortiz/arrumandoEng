@@ -24,15 +24,15 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch("http://localhost:8080/api/saida-estoque")
             .then((response) => response.json())
             .then((saidas) => {
-                console.log(saidas);
+                console.log("Saídas carregadas:", saidas);
                 tabela.innerHTML = ""; // Limpa a tabela
                 saidas.forEach((saida) => {
                     const row = document.createElement("tr");
                     row.classList.add("table-row-clickable");
-                    row.setAttribute("data-id", saida.id); // Adiciona o ID da saída na linha
+                    row.setAttribute("data-id", saida.idRegistroSaidaItens); // Atribui corretamente o ID da saída
                     row.innerHTML = `
                         <td>${saida.idRegistroSaidaItens}</td>
-                        <td>${saida.produto.nomeProduto}</td>
+                        <td>${saida.produto?.nomeProduto || "Sem Produto"}</td>
                         <td>${saida.qtde}</td>
                         <td>${saida.motivo || "N/A"}</td>
                         <td>${saida.dataSaida}</td>
@@ -44,9 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll(".table-row-clickable").forEach((row) => {
                     row.addEventListener("click", function () {
                         const id = this.getAttribute("data-id");
-                        if (confirm("Deseja alterar esta saída?")) {
-                            carregarSaida(id);
-                        }
+                        console.log("ID da linha clicada:", id); // Log para depuração
+                        carregarSaida(id);
                     });
                 });
             })
@@ -64,27 +63,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 produtoSelect.innerHTML = ""; // Limpa o select
                 produtos.forEach((produto) => {
                     const option = document.createElement("option");
-                    option.value = produto.id;
-                    option.textContent = produto.nome;
+                    option.value = produto.idProduto; // Use o campo correto do JSON retornado
+                    option.textContent = produto.nomeProduto; // Use o nome correto
                     produtoSelect.appendChild(option);
                 });
             })
-            .catch((error) => console.error("Erro ao carregar produtos:", error));
+            .catch((error) => {
+                console.error("Erro ao carregar produtos:", error);
+                showMessage("Erro ao carregar produtos.", "error");
+            });
     }
 
     // Carregar os dados de uma saída específica no formulário
     function carregarSaida(id) {
+        console.log(`Carregando saída com ID: ${id}`); // Log para depuração
         fetch(`http://localhost:8080/api/saida-estoque/${id}`)
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Falha ao carregar saída.");
+                }
+                return response.json();
+            })
             .then((saida) => {
+                console.log("Saída carregada:", saida); // Log para depuração
                 // Preenche o formulário com os dados da saída
-                idInput.value = saida.id;
-                produtoSelect.value = saida.produto.id;
-                quantidadeInput.value = saida.quantidade;
+                idInput.value = saida.idRegistroSaidaItens; // Use o ID correto
+                produtoSelect.value = saida.produto.idProduto; // Certifique-se de que os nomes correspondem
+                quantidadeInput.value = saida.qtde;
                 motivoInput.value = saida.motivo || "";
                 dataSaidaInput.value = saida.dataSaida;
 
                 form.style.display = "block"; // Exibe o formulário
+                showMessage("Saída carregada para edição.", "success");
             })
             .catch((error) => {
                 console.error("Erro ao carregar saída:", error);

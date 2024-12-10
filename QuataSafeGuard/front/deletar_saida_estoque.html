@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluir Saída de Estoque</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-danger text-center mb-5">Excluir Saída de Estoque</h1>
+
+        <!-- Tabela de saídas -->
+        <table id="saidaTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Motivo</th>
+                    <th>Data de Saída</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas carregadas dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Mensagem de Confirmação ou Feedback -->
+        <div id="messageContainer" class="mt-4"></div>
+    </div>
+
+    <script src="js/excluirSaidaEstoque.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.quata.quatasafeguardbackend.services;
 
+import com.quata.quatasafeguardbackend.dto.registroSaida.RegistroSaidaRequest;
 import com.quata.quatasafeguardbackend.entities.Produto;
 import com.quata.quatasafeguardbackend.entities.RegistroSaidaItens;
 import com.quata.quatasafeguardbackend.repositories.RegistroSaidaItensRepository;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RegistroSaidaItensService {
@@ -21,21 +23,27 @@ public class RegistroSaidaItensService {
     private ProdutoService produtoService;
 
     // Registrar saída de estoque
-    public RegistroSaidaItens registrarSaida(Long idProduto, Integer quantidade, String motivo, LocalDate dataSaida) {
-        Produto produto = produtoService.getByIdProduto(idProduto);
-        if (produto.getQuantidadeEstoque() < quantidade) {
-            throw new IllegalArgumentException("Estoque insuficiente para a saída.");
-        }
-        produtoService.reduzirEstoque(idProduto, quantidade);
 
-        RegistroSaidaItens registro = new RegistroSaidaItens();
-        registro.setDataSaida(dataSaida);
-        registro.setProduto(produto);
-        registro.setQtde(quantidade);
-        registro.setMotivo(motivo);
+    public List<RegistroSaidaItens> registrarSaidas(List<RegistroSaidaRequest> saidasRequest) {
+        return saidasRequest.stream().map(saidaRequest -> {
+            Produto produto = produtoService.getByIdProduto(saidaRequest.getIdProduto());
 
-        return registroSaidaItensRepository.save(registro);
+            if (produto.getQuantidadeEstoque() < saidaRequest.getQuantidade()) {
+                throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNomeProduto());
+            }
+
+            produtoService.reduzirEstoque(produto.getIdProduto(), saidaRequest.getQuantidade());
+
+            RegistroSaidaItens registro = new RegistroSaidaItens();
+            registro.setDataSaida(saidaRequest.getDataSaida());
+            registro.setProduto(produto);
+            registro.setQtde(saidaRequest.getQuantidade());
+            registro.setMotivo(saidaRequest.getMotivo());
+
+            return registroSaidaItensRepository.save(registro);
+        }).collect(Collectors.toList());
     }
+
 
     public Optional<RegistroSaidaItens> buscarPorId(Long id) {
         return registroSaidaItensRepository.findById(id);

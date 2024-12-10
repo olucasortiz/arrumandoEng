@@ -21,9 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${saida.qtde || "N/A"}</td>
                         <td>${saida.motivo || "N/A"}</td>
                         <td>${saida.dataSaida ? new Date(saida.dataSaida).toLocaleDateString("pt-BR") : "Data não disponível"}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="removerSaida(${saida.idRegistroSaidaItens})">Excluir</button>
-                        </td>
                     `;
                 });
             })

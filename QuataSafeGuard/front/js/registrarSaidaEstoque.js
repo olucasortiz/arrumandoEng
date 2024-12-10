@@ -1,75 +1,120 @@
 document.addEventListener("DOMContentLoaded", function () {
-    carregarProdutos();
+    const produtoSelect = document.getElementById("produto");
+    const quantidadeInput = document.getElementById("quantidade");
+    const motivoInput = document.getElementById("motivo");
+    const dataSaidaInput = document.getElementById("dataSaida");
+    const itensTabela = document.getElementById("itensTabela").querySelector("tbody");
+    const registrarSaidaButton = document.getElementById("registrarSaida");
 
-    const form = document.getElementById("saidaForm");
+    let itensSaida = []; // Lista para armazenar os itens adicionados
 
-    // Criação de um contêiner para exibir mensagens de sucesso ou erro
-    const messageContainer = document.createElement("div");
-    messageContainer.style.display = "none";
-    form.parentNode.insertBefore(messageContainer, form);
-
+    // Função para exibir mensagens de sucesso ou erro
     function showMessage(message, type) {
+        const messageContainer = document.createElement("div");
         messageContainer.textContent = message;
-        messageContainer.style.display = "block";
         messageContainer.style.padding = "10px";
-        messageContainer.style.marginBottom = "10px";
+        messageContainer.style.marginTop = "10px";
         messageContainer.style.borderRadius = "5px";
-        messageContainer.style.fontWeight = "bold";
         messageContainer.style.textAlign = "center";
         messageContainer.style.color = type === "success" ? "#155724" : "#721c24";
         messageContainer.style.backgroundColor = type === "success" ? "#d4edda" : "#f8d7da";
         messageContainer.style.border = type === "success" ? "1px solid #c3e6cb" : "1px solid #f5c6cb";
 
-        // Esconde a mensagem após 5 segundos
+        document.body.insertBefore(messageContainer, document.body.firstChild);
+
         setTimeout(() => {
-            messageContainer.style.display = "none";
+            messageContainer.remove();
         }, 5000);
     }
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
+    // Carregar produtos no select
+    function carregarProdutos() {
+        fetch("http://localhost:8080/api/produto/get-all-produto")
+            .then((response) => response.json())
+            .then((produtos) => {
+                produtoSelect.innerHTML = ""; // Limpa o select
+                produtos.forEach((produto) => {
+                    const option = document.createElement("option");
+                    option.value = produto.idProduto;
+                    option.textContent = `${produto.nomeProduto} (${produto.quantidadeEstoque} disponíveis)`;
+                    produtoSelect.appendChild(option);
+                });
+            })
+            .catch((error) => console.error("Erro ao carregar produtos:", error));
+    }
 
-        const produtoId = document.getElementById("produto").value;
-        const quantidade = parseInt(document.getElementById("quantidade").value, 10);
-        const motivo = document.getElementById("motivo").value;
-        const dataSaida = document.getElementById("dataSaida").value;
+    // Adicionar produto à lista
+    document.getElementById("adicionarProduto").addEventListener("click", function () {
+        const produtoId = parseInt(produtoSelect.value, 10);
+        const produtoNome = produtoSelect.options[produtoSelect.selectedIndex].text.split(" (")[0];
+        const quantidade = parseInt(quantidadeInput.value, 10);
+        const motivo = motivoInput.value;
+        const dataSaida = dataSaidaInput.value;
 
-        // Verifica se todos os campos estão preenchidos
-        if (!produtoId || !quantidade || !motivo || !dataSaida) {
-            showMessage("Todos os campos são obrigatórios.", "error");
+        if (!produtoId || !quantidade || quantidade <= 0 || !motivo || !dataSaida) {
+            showMessage("Preencha todos os campos corretamente.", "error");
             return;
         }
 
-        // Validação do formato da data (YYYY-MM-DD)
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(dataSaida)) {
-            showMessage("A data deve estar no formato YYYY-MM-DD.", "error");
+        // Adicionar item à lista
+        const item = { produtoId, produtoNome, quantidade, motivo, dataSaida };
+        itensSaida.push(item);
+
+        // Atualizar tabela
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${produtoNome}</td>
+            <td>${quantidade}</td>
+            <td>${motivo}</td>
+            <td>${dataSaida}</td>
+            <td>
+                <button class="btn btn-danger btn-sm remover-item">Remover</button>
+            </td>
+        `;
+        itensTabela.appendChild(row);
+
+        // Evento de remoção
+        row.querySelector(".remover-item").addEventListener("click", function () {
+            itensSaida = itensSaida.filter((i) => i.produtoId !== produtoId);
+            row.remove();
+        });
+
+        // Limpar campos
+        quantidadeInput.value = "";
+        motivoInput.value = "";
+        dataSaidaInput.value = "";
+    });
+
+    // Registrar saída
+    registrarSaidaButton.addEventListener("click", function () {
+        if (itensSaida.length === 0) {      
+            showMessage("Adicione pelo menos um produto antes de registrar.", "error");
             return;
         }
 
-        // Criação da URL com os parâmetros de consulta
-        const url = new URL("http://localhost:8080/api/saida-estoque");
-        url.searchParams.append("idProduto", produtoId);
-        url.searchParams.append("quantidade", quantidade);
-        url.searchParams.append("motivo", motivo);
-        url.searchParams.append("dataSaida", dataSaida);
-
-        // Requisição Fetch
-        fetch(url, {
-            method: "POST"
+        console.log("Dados enviados ao backend:", JSON.stringify(itensSaida, null, 2));
+        fetch("http://localhost:8080/api/saida-estoque", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(itensSaida),
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error(`Erro ${response.status}: ${response.statusText}`);
+                    throw new Error("Erro ao registrar saída.");
                 }
                 return response.json();
             })
             .then(() => {
                 showMessage("Saída registrada com sucesso!", "success");
-                form.reset(); // Limpa o formulário após o sucesso
+                itensSaida = [];
+                itensTabela.innerHTML = ""; // Limpar a tabela
             })
             .catch((error) => {
-                showMessage("Erro ao registrar saída: " + error.message, "error");
-                console.error(error);
+                console.error("Erro ao registrar saída:", error);
+                showMessage("Erro ao registrar saída.", "error");
             });
-    });carregarProdutos();
+    });
+
+    // Inicializar
+    carregarProdutos();
 });

@@ -10,7 +10,7 @@
     <div class="container my-5">
         <h1 class="text-center text-primary mb-4">Registrar Saída de Estoque</h1>
 
-        <!-- Formulário para registrar a saída de estoque -->
+        <!-- Formulário para adicionar itens à saída -->
         <form id="saidaForm" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="produto" class="form-label">Produto:</label>
@@ -28,15 +28,35 @@
                 <label for="dataSaida" class="form-label">Data:</label>
                 <input type="date" id="dataSaida" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Registrar Saída de Estoque</button>
-        </form> 
-            <!-- Link para acessar o histórico -->
+            <button type="button" id="adicionarProduto" class="btn btn-success w-100">Adicionar Produto</button>
+        </form>
+
+        <!-- Tabela de itens adicionados -->
+        <h3 class="text-secondary mt-5">Itens Selecionados</h3>
+        <table id="itensTabela" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Motivo</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas adicionadas dinamicamente -->
+            </tbody>
+        </table>
+
+        <!-- Botão para registrar saída -->
+        <button id="registrarSaida" class="btn btn-primary w-100 mt-4">Registrar Saída</button>
+
+        <!-- Link para acessar o histórico -->
         <div class="text-center mt-5">
             <a href="historico_doacao_recurso.html" class="btn btn-secondary">Ver Histórico</a>
         </div>
-
     </div>
+
     <script src="./js/registrarSaidaEstoque.js"></script>
-    <script src="./js/saidaEstoque.js"></script>
 </body>
 </html>
