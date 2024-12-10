@@ -10,44 +10,61 @@
     <div class="container my-5">
         <h1 class="text-center text-primary mb-4">Registrar Saída de Estoque</h1>
 
-        <!-- Formulário para registrar a saída de estoque -->
-        <form id="saidaForm" class="needs-validation" novalidate>
-            <div class="mb-3">
-                <label for="produto" class="form-label">Produto:</label>
-                <select id="produto" class="form-select" required>
-                    <!-- Lista de produtos será carregada aqui -->
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="quantidade" class="form-label">Quantidade:</label>
-                <input type="number" id="quantidade" class="form-control" placeholder="Quantidade" required min="1">
-            </div>
-            <div class="mb-3">
-                <label for="motivo" class="form-label">Motivo (Obrigatório):</label>
-                <input type="text" id="motivo" class="form-control" placeholder="Motivo para a saída" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Registrar Saída de Estoque</button>
-        </form>
+        <!-- Tela principal: Formulário para registrar saída -->
+        <div id="telaPrincipal">
+            <form id="saidaForm" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="produto" class="form-label">Produto:</label>
+                    <select id="produto" class="form-select" required>
+                        <!-- Lista de produtos será carregada aqui -->
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="quantidade" class="form-label">Quantidade:</label>
+                    <input type="number" id="quantidade" class="form-control" placeholder="Quantidade" required min="1">
+                </div>
+                <div class="mb-3">
+                    <label for="motivo" class="form-label">Motivo (Obrigatório):</label>
+                    <input type="text" id="motivo" class="form-control" placeholder="Motivo para a saída" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Registrar Saída de Estoque</button>
+            </form>
 
-        <div id="alerta"></div>
+            <h2 class="text-center text-primary mt-5">Histórico de Saídas de Estoque</h2>
+            <table id="historicoTabela" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID Produto</th>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Motivo</th>
+                        <th>Data da Saída</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Histórico será carregado aqui -->
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Tabela para mostrar o histórico de saídas de estoque -->
-        <h2 class="text-center text-primary mt-5">Histórico de Saídas de Estoque</h2>
-        <table id="historicoTabela" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID Produto</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Motivo</th>
-                    <th>Data da Saída</th>
-                    <th>Ações</th> <!-- Nova coluna para as ações -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Histórico será carregado aqui -->
-            </tbody>
-        </table>
+        <!-- Tela de Alteração -->
+        <div id="telaAlteracao" style="display: none;">
+            <h2 class="text-center text-primary mb-4">Alterar Saída de Estoque</h2>
+            <form id="alteracaoForm">
+                <input type="hidden" id="alteracaoId">
+                <div class="mb-3">
+                    <label for="alteracaoQuantidade" class="form-label">Quantidade:</label>
+                    <input type="number" id="alteracaoQuantidade" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="alteracaoMotivo" class="form-label">Motivo:</label>
+                    <input type="text" id="alteracaoMotivo" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100 mb-2">Salvar Alterações</button>
+                <button type="button" id="cancelarAlteracao" class="btn btn-secondary w-100">Cancelar</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

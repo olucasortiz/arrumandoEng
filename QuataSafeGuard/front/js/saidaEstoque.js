@@ -32,46 +32,7 @@ function carregarProdutos() {
         });
 }
 
-// Função para registrar a saída de estoque
-const buttonSubmit = document.querySelector('#saidaForm .btn');
-document.getElementById("saidaForm").addEventListener("submit", function (event) {
-    event.preventDefault();
 
-    const produtoId = document.getElementById("produto").value;
-    const quantidade = document.getElementById("quantidade").value;
-    const motivo = document.getElementById("motivo").value;
-
-    // Validação simples
-    if (!produtoId || !quantidade || quantidade <= 0 || !motivo) {
-        alert("Por favor, preencha todos os campos corretamente.");
-        return;
-    }
-
-    const url = `http://localhost:8080/api/saida-estoque?idProduto=${produtoId}&quantidade=${quantidade}&motivo=${motivo}`;
-
-    buttonSubmit.innerHTML = 'Carregando...';
-    buttonSubmit.setAttribute('disabled', 'disabled');
-
-    fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(response => response.json())
-        .then(result => {
-            alert("Saída de estoque registrada com sucesso!");
-            document.getElementById("saidaForm").reset();
-            carregarHistoricoSaidas();  // Atualiza o histórico de saídas
-            carregarProdutos();
-        })
-        .catch(error => {
-            alert("Erro ao registrar saída de estoque: " + error.message);
-        })
-        .finally(() => {
-            buttonSubmit.innerHTML = 'Registrar Saída de Estoque';
-            buttonSubmit.removeAttribute('disabled');
-        })
-    carregarHistoricoSaidas();
-});
 
 // Função para carregar o histórico de saídas de estoque
 function carregarHistoricoSaidas() {
@@ -198,5 +159,3 @@ const salvarAlteracoes = async () => {
         console.error(error);
     }
 };
-
-

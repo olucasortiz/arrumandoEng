@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class RegistroSaidaItensService {
@@ -34,6 +35,10 @@ public class RegistroSaidaItensService {
         registro.setMotivo(motivo);
 
         return registroSaidaItensRepository.save(registro);
+    }
+
+    public Optional<RegistroSaidaItens> buscarPorId(Long id) {
+        return registroSaidaItensRepository.findById(id);
     }
 
     public List<RegistroSaidaItens> listarSaidas() {

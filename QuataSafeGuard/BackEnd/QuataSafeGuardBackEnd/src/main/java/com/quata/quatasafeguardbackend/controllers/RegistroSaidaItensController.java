@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/saida-estoque")
@@ -32,6 +33,12 @@ public class RegistroSaidaItensController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RegistroSaidaItens> buscarSaidaPorId(@PathVariable Long id) {
+        Optional<RegistroSaidaItens> saida = registroSaidaItensService.buscarPorId(id);
+        return saida.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
     @GetMapping
     public ResponseEntity<List<RegistroSaidaItens>> listarSaidas() {
         List<RegistroSaidaItens> saidas = registroSaidaItensService.listarSaidas();
