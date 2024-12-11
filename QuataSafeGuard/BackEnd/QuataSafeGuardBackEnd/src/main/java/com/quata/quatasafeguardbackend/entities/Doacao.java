@@ -1,8 +1,5 @@
 package com.quata.quatasafeguardbackend.entities;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -22,6 +16,7 @@ public class Doacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDoacao;
+
     @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate data;
@@ -32,20 +27,20 @@ public class Doacao {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
+    @JsonManagedReference // Garante que o Jackson processe essa relação corretamente
     private Produto produto;
-    
-    @JsonManagedReference
+
     @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
+    @JsonManagedReference
     private Funcionario funcionario;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "caixa_id", nullable = true)
+    @JoinColumn(name = "caixa_id")
     private Caixa caixa;
 
-    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "doador_id", nullable = true)
+    @JoinColumn(name = "doador_id")
+    @JsonManagedReference
     private Doador doador;
-
 }

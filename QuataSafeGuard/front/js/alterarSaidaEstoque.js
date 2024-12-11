@@ -94,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 dataSaidaInput.value = saida.dataSaida;
 
                 form.style.display = "block"; // Exibe o formulário
-                showMessage("Saída carregada para edição.", "success");
             })
             .catch((error) => {
                 console.error("Erro ao carregar saída:", error);

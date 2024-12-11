@@ -18,7 +18,7 @@ function carregarProdutos() {
             const produtoSelect = document.getElementById("produto");
 
             if (Array.isArray(data)) {
-                data.forEach(produto => {
+                data.forEach(produto => {Q
                     const option = document.createElement("option");
                     option.value = produto.idProduto;  // Usando idProduto como valor
                     option.textContent = `${produto.nomeProduto} (${produto.quantidadeEstoque} disponíveis)`;  // Exibe nome e quantidade
@@ -51,7 +51,7 @@ function buscarDoadorPorCpf(cpf) {
 }
 
 
-function carregarHistoricoDoacoes() {
+/*(function carregarHistoricoDoacoes() {
     fetch("http://localhost:8080/api/doacoes/historico", {
         method: "GET",
         headers: {
@@ -111,7 +111,7 @@ function carregarHistoricoDoacoes() {
         .catch(error => {
             console.error("Erro ao carregar histórico de doações:", error);
         });
-}
+}*/
 
 function alterarDoacao(id) {
     // Exibir o modal de alteração

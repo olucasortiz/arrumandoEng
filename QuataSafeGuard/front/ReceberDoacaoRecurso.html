@@ -3,94 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Doação de Recursos</title>
+    <title>Receber Doação de Recursos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container my-5">
-        <h1 class="text-center text-primary mb-4">Registrar Doação de Recursos</h1>
-        
-        <!-- Formulário de doação -->
+        <h1 class="text-center text-primary mb-4">Receber Doação de Recursos</h1>
+
+        <!-- Contêiner para mensagens de sucesso ou erro -->
+        <div id="messageContainer" class="alert" style="display: none;"></div>
+
+        <!-- Formulário para adicionar doações -->
         <form id="doacaoForm">
             <div class="mb-3">
                 <label for="cpf" class="form-label">CPF do Doador:</label>
-                <input type="text" id="cpf" name="cpf" class="form-control" placeholder="CPF do Doador" required>
+                <input type="text" id="cpf" class="form-control" placeholder="CPF do Doador" required>
             </div>
-
-            <!-- Seleção de Produto -->
             <div class="mb-3">
-                <label for="produto" class="form-label">Produto a Doar:</label>
-                <select id="produto" name="produto" class="form-select" required>
-                    <option value="">Selecione um Produto</option>
-                </select>
+                <label for="produto" class="form-label">Produto:</label>
+                <select id="produto" class="form-select" required></select>
             </div>
-
             <div class="mb-3">
                 <label for="quantidade" class="form-label">Quantidade:</label>
-                <input type="number" id="quantidade" name="quantidade" class="form-control" placeholder="Quantidade" required min="1">
+                <input type="number" id="quantidade" class="form-control" placeholder="Quantidade" required>
             </div>
-
             <div class="mb-3">
-                <label for="dataSaida" class="form-label">Data:</label>
-                <input type="datetime" name="dataSaida" id="dataSaida" class="form-control" placeholder="Data" required>
+                <label for="data" class="form-label">Data:</label>
+                <input type="date" id="data" class="form-control" required>
             </div>
-
-            <button type="submit" class="btn btn-primary w-100">Registrar Doação</button>
-            <div id="mensagemAgendar" style="display: none;">
-                <p>A doação foi registrada com sucesso! <a href="AgendamentoEntregaRecursos.html" id="linkAgendar">Clique aqui</a> para agendar a entrega da doação.</p>
-            </div>
+            <button type="button" id="adicionarDoacao" class="btn btn-success w-100">Adicionar Doação</button>
         </form>
-        <h2 class="text-center text-primary mt-5">Histórico de Doações</h2>
-        <table id="historicoTabela" class="table table-striped">
+
+        <!-- Tabela para exibir doações adicionadas -->
+        <h3 class="text-secondary mt-5">Doações Adicionadas</h3>
+        <table id="itensTabela" class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Data</th>
-                    <th>Doador</th>
                     <th>Produto</th>
                     <th>Quantidade</th>
-                    <th>Valor</th>
-                    <th>Funcionário</th>
-                    <th>Ações</th> <!-- Coluna de Ações -->
+                    <th>Data</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- As doações serão carregadas aqui -->
+                <!-- Linhas dinâmicas -->
             </tbody>
         </table>
-        
-    </div>
 
-    <!-- Modal para alterar doação -->
-    <div class="modal" id="alterarDoacaoModal" tabindex="-1" aria-labelledby="alterarDoacaoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="alterarDoacaoModalLabel">Alterar Doação</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAlterarDoacao">
-                        <div class="mb-3">
-                            <label for="modalProduto" class="form-label">Produto</label>
-                            <select class="form-select" id="modalProduto" required>
-                                <!-- Opções de produtos serão carregadas dinamicamente -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="novaQuantidadeInput" class="form-label">Nova Quantidade</label>
-                            <input type="number" class="form-control" id="novaQuantidadeInput" required min="1">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Alterar Doação</button>
-                    </form>
-                </div>
-            </div>
+        <!-- Botão para registrar todas as doações -->
+        <button id="registrarDoacoes" class="btn btn-primary w-100 mt-4">Registrar Todas as Doações</button>
+
+        <!-- Link para acessar o histórico -->
+        <div class="text-center mt-5">
+            <a href="historicoDoacoes.html" class="btn btn-secondary">Ver Histórico de Doações</a>
         </div>
     </div>
-    
-    <script src="js/ReceberDoacaoRecurso.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="js/ReceberDoacao.js"></script>
 </body>
 </html>

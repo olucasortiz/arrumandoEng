@@ -2,6 +2,7 @@ package com.quata.quatasafeguardbackend.controllers;
 import com.quata.quatasafeguardbackend.dto.registroSaida.RegistroSaidaRequest;
 import com.quata.quatasafeguardbackend.entities.RegistroSaidaItens;
 import com.quata.quatasafeguardbackend.services.RegistroSaidaItensService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,6 @@ public class RegistroSaidaItensController {
 
     @Autowired
     private RegistroSaidaItensService registroSaidaItensService;
-
     @PostMapping
     public ResponseEntity<List<RegistroSaidaItens>> registrarSaidas(@RequestBody List<RegistroSaidaRequest> saidasRequest) {
         System.out.println("Iniciando processamento de múltiplas saídas:");
@@ -39,7 +39,6 @@ public class RegistroSaidaItensController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 
     @GetMapping("/{id}")
